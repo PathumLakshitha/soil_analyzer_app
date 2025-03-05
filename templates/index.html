@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tea Soil Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <h1 class="main-heading">Tea Soil Analyzer</h1>
+        <div class="container">
+            <!-- Left Panel: Input Form -->
+            <div class="left-panel">
+                <form id="uploadForm" method="POST" enctype="multipart/form-data" action="/predict">
+                    <label for="file">Upload Soil Image:</label>
+                    <input type="file" name="file" id="file" required>
+
+                    <label for="pH_value">Enter pH Value:</label>
+                    <input type="number" name="pH_value" id="pH_value" step="0.1" min="0" max="14">
+
+                    <button type="submit">Predict Soil Type</button>
+                </form>
+            </div>
+            <!-- Right Panel: Output -->
+            <div class="right-panel">
+                <div id="result">
+                    <div class="result-container">
+                        <!-- Placeholder or Uploaded Image -->
+                        <img id="result-image" src="" alt="Uploaded Soil Image">
+
+                        <!-- Prediction Details -->
+                        <div class="result-details">
+                            <h2>Prediction Result</h2>
+                            <p><b>Soil Type:</b> <span id="soil-type">N/A</span></p>
+                            <p><b>Confidence Level:</b> <span id="confidence">N/A</span>%</p>
+                        </div>
+                    </div>
+
+                    <!-- Additional Recommendations -->
+                    <p><b>Bramble Mix Percentage:</b> <span id="bramble-percentage">N/A</span>%</p>
+                    <p id="option-sulfur"></p>
+                    <p id="option-aluminum"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const response = await fetch('/predict', { method: 'POST', body: formData });
+            const result = await response.json();
+
+            if (result.error) {
+                document.getElementById('result').innerHTML = `<p style="color: red;">${result.error}</p>`;
+            } else {
+                document.getElementById('soil-type').textContent = result.soil_type;
+                document.getElementById('confidence').textContent = (result.confidence_score * 100).toFixed(2);
+                document.getElementById('result-image').src = result.file_path;
+                document.getElementById('bramble-percentage').textContent = result.bramble_mix_ratio;
+
+                document.getElementById('option-sulfur').innerHTML = result.pH_adjustment_sulfur
+                    ? `<b>Option 1 (Sulfur):</b> ${result.pH_adjustment_sulfur}`
+                    : '';
+                document.getElementById('option-aluminum').innerHTML = result.pH_adjustment_aluminum
+                    ? `<b>Option 2 (Aluminum Sulfate):</b> ${result.pH_adjustment_aluminum}`
+                    : '';
+            }
+        };
+    </script>
+</body>
+</html>

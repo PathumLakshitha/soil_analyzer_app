@@ -1,0 +1,141 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column; /* Ensure vertical alignment */
+}
+
+.main-container {
+  width: 90%;
+  max-width: 1200px;
+  background-color: #fff; /* White background for the main container */
+  border: 1px solid #125514;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Ensures rounded borders apply to heading */
+}
+
+.main-heading {
+  text-align: center;
+  font-size: 36px;
+  color: #fff;
+  background-color: #256e27; /* Green background for heading */
+  padding: 15px;
+  border-bottom: 2px solid #125514; /* Add a border below heading */
+  margin: 0; /* Remove default margin of the heading */
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.left-panel {
+  width: 30%; /* Reduced to 30% */
+  padding-right: 50px; /* Adjusted padding */
+  border-right: 2px solid #ccc; /* Divider remains */
+}
+
+.right-panel {
+  width: 70%; /* Increased to 70% */
+  padding-left: 20px; /* Adjusted padding */
+}
+
+h1 {
+  font-size: 36px;
+}
+
+label {
+  font-size: 18px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+input[type="file"],
+input[type="number"] {
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #256e27;
+  color: white;
+  font-size: 18px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #125514;
+}
+
+#result p {
+  font-size: 18px;
+}
+
+img {
+  width: 300px; /* Fixed width */
+  height: 300px; /* Fixed height */
+  object-fit: cover; /* Ensures the image is cropped to fit */
+  border-radius: 8px; /* Rounded corners for aesthetics */
+  display: block; /* Ensures the image is treated as a block-level element */
+}
+
+/* Specific styling for the placeholder and result image */
+#result-image {
+  width: 300px; /* Fixed width */
+  height: 300px; /* Fixed height */
+  object-fit: cover; /* Ensures the uploaded image is cropped to fit */
+  border-radius: 8px; /* Rounded corners for aesthetics */
+  display: block; /* Centers the block */
+  border: 2px dashed #ccc; /* Dashed border for placeholder */
+  background-color: #f9f9f9; /* Light gray background for empty square */
+}
+
+.result-container {
+  display: flex; /* Aligns image and details side by side */
+  align-items: flex-start; /* Align items to the top */
+  margin-bottom: 20px; /* Adds space below the container */
+  justify-content: flex-start;
+}
+
+#result-image {
+  width: 300px; /* Static square size */
+  height: 300px;
+  object-fit: cover; /* Ensures the image scales well */
+  border-radius: 8px; /* Aesthetic rounded corners */
+  margin-right: 20px; /* Space between image and details */
+}
+
+.result-details {
+  flex: 1; /* Allows details to use the remaining space */
+}
+
+.result-details p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.result-below {
+  margin-top: 20px; /* Adds space between the details and the section below */
+}
+
+.result-below p {
+  font-size: 18px;
+  margin: 5px 0;
+}
