@@ -139,3 +139,19 @@ img {
   font-size: 18px;
   margin: 5px 0;
 }
+
+.reset-button {
+  background-color: #c47c2a;
+  color: white;
+  font-size: 18px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.reset-button:hover {
+  background-color: #555;
+}
