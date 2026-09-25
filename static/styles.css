@@ -7,29 +7,41 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  flex-direction: column; /* Ensure vertical alignment */
+  min-height: 100vh;
+  flex-direction: column;
 }
+
+/* ==========================================
+   MAIN CONTAINER
+   ========================================== */
 
 .main-container {
   width: 90%;
   max-width: 1200px;
-  background-color: #fff; /* White background for the main container */
+  background-color: #fff;
   border: 1px solid #125514;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden; /* Ensures rounded borders apply to heading */
+  overflow: hidden;
 }
+
+/* ==========================================
+   MAIN HEADING
+   ========================================== */
 
 .main-heading {
   text-align: center;
   font-size: 36px;
   color: #fff;
-  background-color: #256e27; /* Green background for heading */
+  background-color: #256e27;
   padding: 15px;
-  border-bottom: 2px solid #125514; /* Add a border below heading */
-  margin: 0; /* Remove default margin of the heading */
+  border-bottom: 2px solid #125514;
+  margin: 0;
 }
+
+/* ==========================================
+   MAIN CONTENT CONTAINER
+   ========================================== */
 
 .container {
   display: flex;
@@ -38,26 +50,46 @@ body {
   padding: 20px;
 }
 
+/* ==========================================
+   LEFT PANEL
+   ========================================== */
+
 .left-panel {
-  width: 30%; /* Reduced to 30% */
-  padding-right: 50px; /* Adjusted padding */
-  border-right: 2px solid #ccc; /* Divider remains */
+  width: 30%;
+  padding-right: 50px;
+  border-right: 2px solid #ccc;
 }
 
+/* ==========================================
+   RIGHT PANEL
+   ========================================== */
+
 .right-panel {
-  width: 70%; /* Increased to 70% */
-  padding-left: 20px; /* Adjusted padding */
+  width: 70%;
+  padding-left: 20px;
 }
+
+/* ==========================================
+   HEADINGS
+   ========================================== */
 
 h1 {
   font-size: 36px;
 }
+
+/* ==========================================
+   FORM LABELS
+   ========================================== */
 
 label {
   font-size: 18px;
   margin-bottom: 8px;
   display: block;
 }
+
+/* ==========================================
+   FORM INPUTS
+   ========================================== */
 
 input[type="file"],
 input[type="number"] {
@@ -66,7 +98,13 @@ input[type="number"] {
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 15px;
 }
+
+/* ==========================================
+   BUTTONS
+   ========================================== */
 
 button {
   background-color: #256e27;
@@ -84,61 +122,185 @@ button:hover {
   background-color: #125514;
 }
 
+/* ==========================================
+   RESULT AREA
+   ========================================== */
+
 #result p {
   font-size: 18px;
 }
 
-img {
-  width: 300px; /* Fixed width */
-  height: 300px; /* Fixed height */
-  object-fit: cover; /* Ensures the image is cropped to fit */
-  border-radius: 8px; /* Rounded corners for aesthetics */
-  display: block; /* Ensures the image is treated as a block-level element */
+/* ==========================================
+   RESULT IMAGE
+   ========================================== */
+
+#result-image {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  border: 2px dashed #ccc;
+  background-color: #f9f9f9;
+  margin-right: 20px;
 }
 
-/* Specific styling for the placeholder and result image */
-#result-image {
-  width: 300px; /* Fixed width */
-  height: 300px; /* Fixed height */
-  object-fit: cover; /* Ensures the uploaded image is cropped to fit */
-  border-radius: 8px; /* Rounded corners for aesthetics */
-  display: block; /* Centers the block */
-  border: 2px dashed #ccc; /* Dashed border for placeholder */
-  background-color: #f9f9f9; /* Light gray background for empty square */
-}
+/* ==========================================
+   IMAGE + RESULT DETAILS CONTAINER
+   ========================================== */
 
 .result-container {
-  display: flex; /* Aligns image and details side by side */
-  align-items: flex-start; /* Align items to the top */
-  margin-bottom: 20px; /* Adds space below the container */
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
   justify-content: flex-start;
 }
 
-#result-image {
-  width: 300px; /* Static square size */
-  height: 300px;
-  object-fit: cover; /* Ensures the image scales well */
-  border-radius: 8px; /* Aesthetic rounded corners */
-  margin-right: 20px; /* Space between image and details */
-}
+/* ==========================================
+   PROFESSIONAL PREDICTION RESULT
+   ========================================== */
 
 .result-details {
-  flex: 1; /* Allows details to use the remaining space */
+  flex: 1;
+  padding: 5px 10px;
 }
 
-.result-details p {
-  font-size: 18px;
-  margin: 10px 0;
+/* Result heading */
+
+.result-header {
+  margin-bottom: 20px;
 }
+
+.result-label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: #256e27;
+  margin-bottom: 5px;
+}
+
+.result-header h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #222;
+  font-weight: 600;
+}
+
+/* ==========================================
+   SOIL TYPE CARD
+   ========================================== */
+
+.soil-type-card {
+  background: #f6faf6;
+  border: 1px solid #d8e8d8;
+  border-left: 4px solid #256e27;
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 22px;
+}
+
+.detail-label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1.2px;
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.soil-type-value {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 21px;
+  font-weight: 600;
+  color: #256e27;
+}
+
+.soil-icon {
+  font-size: 22px;
+}
+
+/* ==========================================
+   CONFIDENCE SECTION
+   ========================================== */
+
+.confidence-section {
+  padding: 5px 2px;
+}
+
+.confidence-header {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 9px;
+}
+
+.confidence-header .detail-label {
+  margin-right: auto;
+  margin-bottom: 0;
+}
+
+#confidence {
+  font-size: 25px;
+  font-weight: bold;
+  color: #256e27;
+}
+
+#confidence-symbol {
+  font-size: 18px;
+  font-weight: bold;
+  color: #256e27;
+}
+
+/* ==========================================
+   CONFIDENCE PROGRESS BAR
+   ========================================== */
+
+.confidence-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #e5e5e5;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 9px;
+}
+
+.confidence-fill {
+  width: 0%;
+  height: 100%;
+  background-color: #256e27;
+  border-radius: 20px;
+  transition: width 0.6s ease;
+}
+
+/* ==========================================
+   CONFIDENCE DESCRIPTION
+   ========================================== */
+
+#confidence-description {
+  margin: 0;
+  font-size: 14px !important;
+  color: #777;
+}
+
+/* ==========================================
+   RESULTS BELOW
+   ========================================== */
 
 .result-below {
-  margin-top: 20px; /* Adds space between the details and the section below */
+  margin-top: 20px;
 }
 
 .result-below p {
   font-size: 18px;
   margin: 5px 0;
 }
+
+/* ==========================================
+   RESET BUTTON
+   ========================================== */
 
 .reset-button {
   background-color: #c47c2a;
@@ -154,4 +316,60 @@ img {
 
 .reset-button:hover {
   background-color: #555;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+@media (max-width: 900px) {
+  .main-container {
+    width: 95%;
+  }
+
+  .container {
+    flex-direction: column;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .left-panel {
+    padding-right: 0;
+    padding-bottom: 20px;
+    border-right: none;
+    border-bottom: 2px solid #ccc;
+  }
+
+  .right-panel {
+    padding-left: 0;
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 650px) {
+  .main-heading {
+    font-size: 28px;
+  }
+
+  .result-container {
+    flex-direction: column;
+  }
+
+  #result-image {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .result-details {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px 0;
+  }
 }

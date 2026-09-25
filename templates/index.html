@@ -48,12 +48,34 @@
               <img id="result-image" src="" alt="Uploaded Soil Image" />
 
               <!-- Prediction Details -->
+
               <div class="result-details">
-                <h2>Prediction Result</h2>
-                <p><b>Soil Type:</b> <span id="soil-type">N/A</span></p>
-                <p>
-                  <b>Confidence Level:</b> <span id="confidence">N/A</span>%
-                </p>
+                <div class="result-header">
+                  <span class="result-label">PREDICTION RESULT</span>
+                  <h2>Soil Analysis</h2>
+                </div>
+
+                <div class="soil-type-card">
+                  <span class="detail-label">SOIL TYPE</span>
+                  <div class="soil-type-value">
+                    <span class="soil-icon">🌱</span>
+                    <span id="soil-type">N/A</span>
+                  </div>
+                </div>
+
+                <div class="confidence-section">
+                  <div class="confidence-header">
+                    <span class="detail-label">CONFIDENCE LEVEL</span>
+                    <span id="confidence">N/A</span
+                    ><span id="confidence-symbol">%</span>
+                  </div>
+
+                  <div class="confidence-bar">
+                    <div id="confidence-fill" class="confidence-fill"></div>
+                  </div>
+
+                  <p id="confidence-description">Waiting for prediction...</p>
+                </div>
               </div>
             </div>
 
@@ -87,9 +109,29 @@
           ).innerHTML = `<p style="color: red;">${result.error}</p>`;
         } else {
           document.getElementById("soil-type").textContent = result.soil_type;
-          document.getElementById("confidence").textContent = (
-            result.confidence_score * 100
-          ).toFixed(2);
+
+          const confidencePercentage = result.confidence_score * 100;
+
+          document.getElementById("confidence").textContent =
+            confidencePercentage.toFixed(2);
+
+          document.getElementById("confidence-fill").style.width =
+            confidencePercentage.toFixed(2) + "%";
+
+          // Confidence description
+          const confidenceDescription = document.getElementById(
+            "confidence-description"
+          );
+
+          if (confidencePercentage >= 80) {
+            confidenceDescription.textContent = "High confidence prediction";
+          } else if (confidencePercentage >= 60) {
+            confidenceDescription.textContent =
+              "Moderate confidence prediction";
+          } else {
+            confidenceDescription.textContent = "Low confidence prediction";
+          }
+
           document.getElementById("result-image").src = result.file_path;
           document.getElementById("bramble-percentage").textContent =
             result.bramble_mix_ratio;
