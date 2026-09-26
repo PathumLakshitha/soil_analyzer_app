@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -52,7 +52,6 @@
               <div class="result-details">
                 <div class="result-header">
                   <span class="result-label">PREDICTION RESULT</span>
-                  <h2>Soil Analysis</h2>
                 </div>
 
                 <div class="soil-type-card">
@@ -78,15 +77,24 @@
                 </div>
               </div>
             </div>
-
-            <!-- Additional Recommendations -->
-            <p>
-              <b>Rice Hull Mix Percentage:</b>
-              <span id="bramble-percentage">N/A</span>%
-            </p>
-            <p id="option-sulfur"></p>
-            <p id="option-aluminum"></p>
           </div>
+        </div>
+        <!-- Additional Recommendations -->
+        <!-- Additional Recommendations -->
+        <div class="recommendations">
+          <p class="mix-ratio">
+            <b>Rice Hull Mix Percentage:</b>
+            <span id="bramble-percentage">N/A</span>%
+          </p>
+
+          <h3 class="recommendation-heading">pH Adjustment Recommendations</h3>
+
+          <table class="ph-table">
+            <tbody>
+              <tr id="option-sulfur"></tr>
+              <tr id="option-aluminum"></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -104,9 +112,8 @@
         const result = await response.json();
 
         if (result.error) {
-          document.getElementById(
-            "result"
-          ).innerHTML = `<p style="color: red;">${result.error}</p>`;
+          document.getElementById("result").innerHTML =
+            `<p style="color: red;">${result.error}</p>`;
         } else {
           document.getElementById("soil-type").textContent = result.soil_type;
 
@@ -120,7 +127,7 @@
 
           // Confidence description
           const confidenceDescription = document.getElementById(
-            "confidence-description"
+            "confidence-description",
           );
 
           if (confidencePercentage >= 80) {
@@ -136,13 +143,31 @@
           document.getElementById("bramble-percentage").textContent =
             result.bramble_mix_ratio;
 
-          document.getElementById("option-sulfur").innerHTML =
-            result.pH_adjustment_sulfur
-              ? `<b>Option 1 (Sulfur):</b> ${result.pH_adjustment_sulfur}`
-              : "";
+          if (result.pH_adjustment_sulfur) {
+            const isStatus =
+              result.pH_adjustment_sulfur ===
+              "The soil pH is already suitable for tea nurseries.";
+
+            document.getElementById("option-sulfur").innerHTML = `
+    <td class="option-name">
+      ${isStatus ? "STATUS" : "OPTION 1 (Sulfur)"}
+    </td>
+    <td class="option-description">
+      ${result.pH_adjustment_sulfur}
+    </td>
+  `;
+          } else {
+            document.getElementById("option-sulfur").innerHTML = "";
+          }
+
           document.getElementById("option-aluminum").innerHTML =
             result.pH_adjustment_aluminum
-              ? `<b>Option 2 (Aluminum Sulfate):</b> ${result.pH_adjustment_aluminum}`
+              ? `
+      <td class="option-name">OPTION 2 (Aluminum Sulfate)</td>
+      <td class="option-description">
+        ${result.pH_adjustment_aluminum}
+      </td>
+    `
               : "";
         }
       };

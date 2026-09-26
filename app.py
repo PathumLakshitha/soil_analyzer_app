@@ -30,7 +30,7 @@ def adjust_soil_ph(soil_type, current_ph):
         return None, None, f"The entered pH value {current_ph} is invalid. Please enter a value of 4.4 or higher."
 
     if target_ph_min <= current_ph <= target_ph_max:
-        return f"The soil pH is already suitable for tea plantation.", None, None
+        return f"The soil pH is already suitable for tea nurseries.", None, None
 
     if current_ph > target_ph_max:
         sulfur_instruction = (f"Mix 25-85 grams of sulfur powder per {soil_volume_area} square meter of soil "

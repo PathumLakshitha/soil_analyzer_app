@@ -44,10 +44,11 @@ body {
    ========================================== */
 
 .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 28% 72%;
   padding: 20px;
+  box-sizing: border-box;
+  align-items: start;
 }
 
 /* ==========================================
@@ -55,9 +56,11 @@ body {
    ========================================== */
 
 .left-panel {
-  width: 30%;
-  padding-right: 50px;
-  border-right: 2px solid #ccc;
+  padding: 12px 15px;
+  background-color: #e5e8e9;
+  border: 1px solid #adb4ad;
+  border-radius: 8px;
+  box-sizing: border-box;
 }
 
 /* ==========================================
@@ -65,8 +68,9 @@ body {
    ========================================== */
 
 .right-panel {
-  width: 70%;
   padding-left: 20px;
+  box-sizing: border-box;
+  background-color: #ffffff;
 }
 
 /* ==========================================
@@ -82,8 +86,7 @@ h1 {
    ========================================== */
 
 label {
-  font-size: 18px;
-  margin-bottom: 8px;
+  font-size: 17px;
   display: block;
 }
 
@@ -109,13 +112,13 @@ input[type="number"] {
 button {
   background-color: #256e27;
   color: white;
-  font-size: 18px;
-  padding: 10px 20px;
+  font-size: 17px;
+  padding: 8px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 4px;
 }
 
 button:hover {
@@ -135,8 +138,8 @@ button:hover {
    ========================================== */
 
 #result-image {
-  width: 300px;
-  height: 300px;
+  width: 270px;
+  height: 270px;
   object-fit: cover;
   border-radius: 8px;
   display: block;
@@ -151,11 +154,10 @@ button:hover {
 
 .result-container {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   margin-bottom: 20px;
   justify-content: flex-start;
 }
-
 /* ==========================================
    PROFESSIONAL PREDICTION RESULT
    ========================================== */
@@ -180,46 +182,54 @@ button:hover {
   margin-bottom: 5px;
 }
 
-.result-header h2 {
-  margin: 0;
-  font-size: 28px;
-  color: #222;
-  font-weight: 600;
-}
-
 /* ==========================================
-   SOIL TYPE CARD
+   SOIL TYPE RESULT TABLE
    ========================================== */
 
 .soil-type-card {
-  background: #f6faf6;
-  border: 1px solid #d8e8d8;
-  border-left: 4px solid #256e27;
-  border-radius: 8px;
-  padding: 16px 18px;
-  margin-bottom: 22px;
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+  border: none;
+  border-left: none;
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: 18px;
+  display: flex;
 }
 
-.detail-label {
-  display: block;
+.soil-type-card .detail-label {
+  width: 28%;
+  margin: 0;
+  padding: 10px 12px;
+  background-color: #f6faf6;
+  border: 1px solid #ddd;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 1.2px;
-  color: #777;
-  margin-bottom: 8px;
+  color: #256e27;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
 }
 
 .soil-type-value {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-left: none;
+  background-color: #fff;
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 600;
   color: #256e27;
+  box-sizing: border-box;
 }
 
 .soil-icon {
-  font-size: 22px;
+  font-size: 20px;
 }
 
 /* ==========================================
@@ -286,6 +296,67 @@ button:hover {
 }
 
 /* ==========================================
+   RECOMMENDATIONS
+   ========================================== */
+
+.recommendations {
+  grid-column: 1 / -1;
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+}
+
+/* Rice Hull Mix Percentage */
+
+.mix-ratio {
+  font-size: 18px;
+  margin: 0 0 18px 0;
+}
+
+.mix-ratio span {
+  color: #256e27;
+  font-weight: bold;
+}
+
+/* pH Adjustment Recommendations */
+
+.recommendation-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+/* ==========================================
+   PH RECOMMENDATION TABLE
+   ========================================== */
+
+.ph-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.ph-table td {
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  vertical-align: top;
+}
+
+.option-name {
+  width: 28%;
+  font-weight: bold;
+  color: #256e27;
+  background-color: #f6faf6;
+  white-space: nowrap;
+  vertical-align: middle !important;
+}
+
+.option-description {
+  color: #444;
+  line-height: 1.4;
+}
+
+/* ==========================================
    RESULTS BELOW
    ========================================== */
 
@@ -305,17 +376,17 @@ button:hover {
 .reset-button {
   background-color: #c47c2a;
   color: white;
-  font-size: 18px;
-  padding: 10px 20px;
+  font-size: 17px;
+  padding: 8px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .reset-button:hover {
-  background-color: #555;
+  background-color: #a86620;
 }
 
 /* ==========================================
@@ -371,5 +442,21 @@ button:hover {
     width: 100%;
     box-sizing: border-box;
     padding: 5px 0;
+  }
+
+  /* Make recommendation table mobile friendly */
+  .ph-table {
+    font-size: 14px;
+  }
+
+  .ph-table td {
+    padding: 8px 10px;
+  }
+
+  .option-name {
+    width: 35%;
+    white-space: normal;
+    text-align: center;
+    vertical-align: middle !important;
   }
 }
