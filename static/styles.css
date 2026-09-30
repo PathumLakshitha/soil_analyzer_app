@@ -180,6 +180,8 @@ button:hover {
   letter-spacing: 1.5px;
   color: #256e27;
   margin-bottom: 5px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* ==========================================
@@ -229,7 +231,13 @@ button:hover {
 }
 
 .soil-icon {
-  font-size: 20px;
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: #ccc;
+  margin-right: 10px;
 }
 
 /* ==========================================
@@ -305,16 +313,34 @@ button:hover {
   border-top: 1px solid #ddd;
 }
 
+.recommendations .result-label {
+  display: block;
+  margin-bottom: 20px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* Rice Hull Mix Percentage */
 
 .mix-ratio {
-  font-size: 18px;
+  font-size: 17px;
   margin: 0 0 18px 0;
+  line-height: 1.8;
+}
+
+.mix-ratio p {
+  margin: 0;
 }
 
 .mix-ratio span {
   color: #256e27;
   font-weight: bold;
+}
+
+.mix-ratio .mix-bullet {
+  color: #256e27;
+  font-weight: bold;
+  margin-right: 8px;
 }
 
 /* pH Adjustment Recommendations */

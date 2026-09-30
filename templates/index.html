@@ -57,7 +57,7 @@
                 <div class="soil-type-card">
                   <span class="detail-label">SOIL TYPE</span>
                   <div class="soil-type-value">
-                    <span class="soil-icon">🌱</span>
+                    <span class="soil-icon" id="soil-icon"></span>
                     <span id="soil-type">N/A</span>
                   </div>
                 </div>
@@ -82,12 +82,23 @@
         <!-- Additional Recommendations -->
         <!-- Additional Recommendations -->
         <div class="recommendations">
-          <p class="mix-ratio">
-            <b>Rice Hull Mix Percentage:</b>
-            <span id="bramble-percentage">N/A</span>%
-          </p>
+          <div class="mix-ratio">
+            <p>
+              <span class="mix-bullet">•</span>
+              <b>Rice Hull Mix Percentage:</b>
+              <span id="rice-hull-percentage">N/A</span>%
+            </p>
 
-          <h3 class="recommendation-heading">pH Adjustment Recommendations</h3>
+            <p>
+              <span class="mix-bullet">•</span>
+              <b>Rice Hull–Soil Mix Ratio:</b>
+              <span id="simplified-rice-hull-ratio">N/A</span>
+              :
+              <span id="simplified-soil-ratio">N/A</span>
+            </p>
+          </div>
+
+          <span class="result-label">PH ADJUSTMENT RECOMMENDATIONS</span>
 
           <table class="ph-table">
             <tbody>
@@ -115,7 +126,20 @@
           document.getElementById("result").innerHTML =
             `<p style="color: red;">${result.error}</p>`;
         } else {
-          document.getElementById("soil-type").textContent = result.soil_type;
+          const soilType = result.soil_type;
+
+          document.getElementById("soil-type").textContent = soilType;
+
+          // Set soil type bullet color
+          const soilIcon = document.getElementById("soil-icon");
+
+          if (soilType === "Reddish_brown_latasol_soil") {
+            soilIcon.style.backgroundColor = "#cc0000";
+          } else if (soilType === "Red_yellow_podzolic_soil") {
+            soilIcon.style.backgroundColor = "#d9a72e";
+          } else if (soilType === "Immature_brown_loamy_soil") {
+            soilIcon.style.backgroundColor = "#652A0E";
+          }
 
           const confidencePercentage = result.confidence_score * 100;
 
@@ -140,8 +164,37 @@
           }
 
           document.getElementById("result-image").src = result.file_path;
-          document.getElementById("bramble-percentage").textContent =
-            result.bramble_mix_ratio;
+          const riceHullPercentage = parseFloat(result.bramble_mix_ratio);
+
+          // Display the original percentage
+          document.getElementById("rice-hull-percentage").textContent =
+            riceHullPercentage;
+
+          // Ignore decimal part for ratio calculation
+          const riceHullRatio = Math.floor(riceHullPercentage);
+          const soilRatio = 100 - riceHullRatio;
+
+          // Find GCD
+          function gcd(a, b) {
+            while (b !== 0) {
+              const temp = b;
+              b = a % b;
+              a = temp;
+            }
+            return a;
+          }
+
+          const divisor = gcd(riceHullRatio, soilRatio);
+
+          const simpleRiceHullRatio = riceHullRatio / divisor;
+          const simpleSoilRatio = soilRatio / divisor;
+
+          // Display simplest ratio
+          document.getElementById("simplified-rice-hull-ratio").textContent =
+            simpleRiceHullRatio;
+
+          document.getElementById("simplified-soil-ratio").textContent =
+            simpleSoilRatio;
 
           if (result.pH_adjustment_sulfur) {
             const isStatus =
@@ -179,9 +232,14 @@
         form.reset();
 
         // Reset prediction results
+        // Reset prediction results
         document.getElementById("soil-type").textContent = "N/A";
+        document.getElementById("soil-icon").style.backgroundColor = "#ccc";
         document.getElementById("confidence").textContent = "N/A";
-        document.getElementById("bramble-percentage").textContent = "N/A";
+        document.getElementById("rice-hull-percentage").textContent = "N/A";
+        document.getElementById("simplified-rice-hull-ratio").textContent =
+          "N/A";
+        document.getElementById("simplified-soil-ratio").textContent = "N/A";
 
         // Clear uploaded image
         document.getElementById("result-image").src = "";
