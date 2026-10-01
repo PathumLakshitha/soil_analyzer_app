@@ -34,6 +34,8 @@
               max="14"
             />
 
+            <div id="ph-error" class="ph-error"></div>
+
             <button type="submit">Predict Soil Type</button>
             <button type="button" id="resetButton" class="reset-button">
               Reset
@@ -100,10 +102,17 @@
 
           <span class="result-label">PH ADJUSTMENT RECOMMENDATIONS</span>
 
-          <table class="ph-table">
+          <table class="ph-table" id="ph-recommendation-table">
             <tbody>
-              <tr id="option-sulfur"></tr>
-              <tr id="option-aluminum"></tr>
+              <tr id="option-sulfur">
+                <td class="option-name">&nbsp;</td>
+                <td class="option-description">&nbsp;</td>
+              </tr>
+
+              <tr id="option-aluminum">
+                <td class="option-name">&nbsp;</td>
+                <td class="option-description">&nbsp;</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -112,141 +121,227 @@
 
     <script>
       const form = document.getElementById("uploadForm");
+
       form.onsubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData(form);
+
         const response = await fetch("/predict", {
           method: "POST",
           body: formData,
         });
+
         const result = await response.json();
 
         if (result.error) {
-          document.getElementById("result").innerHTML =
-            `<p style="color: red;">${result.error}</p>`;
+          document.getElementById("ph-error").textContent = result.error;
+          return;
+        }
+
+        document.getElementById("ph-error").textContent = "";
+
+        // ==============================
+        // SOIL TYPE
+        // ==============================
+
+        const soilType = result.soil_type;
+
+        document.getElementById("soil-type").textContent = soilType;
+
+        // Set soil type bullet color
+        const soilIcon = document.getElementById("soil-icon");
+
+        if (soilType === "Reddish_brown_latasol_soil") {
+          soilIcon.style.backgroundColor = "#cc0000";
+        } else if (soilType === "Red_yellow_podzolic_soil") {
+          soilIcon.style.backgroundColor = "#d9a72e";
+        } else if (soilType === "Immature_brown_loamy_soil") {
+          soilIcon.style.backgroundColor = "#652A0E";
         } else {
-          const soilType = result.soil_type;
+          soilIcon.style.backgroundColor = "#ccc";
+        }
 
-          document.getElementById("soil-type").textContent = soilType;
+        // ==============================
+        // CONFIDENCE
+        // ==============================
 
-          // Set soil type bullet color
-          const soilIcon = document.getElementById("soil-icon");
+        const confidencePercentage = result.confidence_score * 100;
 
-          if (soilType === "Reddish_brown_latasol_soil") {
-            soilIcon.style.backgroundColor = "#cc0000";
-          } else if (soilType === "Red_yellow_podzolic_soil") {
-            soilIcon.style.backgroundColor = "#d9a72e";
-          } else if (soilType === "Immature_brown_loamy_soil") {
-            soilIcon.style.backgroundColor = "#652A0E";
+        document.getElementById("confidence").textContent =
+          confidencePercentage.toFixed(2);
+
+        document.getElementById("confidence-fill").style.width =
+          confidencePercentage.toFixed(2) + "%";
+
+        const confidenceDescription = document.getElementById(
+          "confidence-description",
+        );
+
+        if (confidencePercentage >= 80) {
+          confidenceDescription.textContent = "High confidence prediction";
+        } else if (confidencePercentage >= 60) {
+          confidenceDescription.textContent = "Moderate confidence prediction";
+        } else {
+          confidenceDescription.textContent = "Low confidence prediction";
+        }
+
+        // ==============================
+        // IMAGE
+        // ==============================
+
+        document.getElementById("result-image").src = result.file_path;
+
+        // ==============================
+        // RICE HULL MIX
+        // ==============================
+
+        const riceHullPercentage = parseFloat(result.bramble_mix_ratio);
+
+        document.getElementById("rice-hull-percentage").textContent =
+          riceHullPercentage;
+
+        // Ignore decimal part for ratio calculation
+        const riceHullRatio = Math.floor(riceHullPercentage);
+        const soilRatio = 100 - riceHullRatio;
+
+        // Find GCD
+        function gcd(a, b) {
+          while (b !== 0) {
+            const temp = b;
+            b = a % b;
+            a = temp;
           }
 
-          const confidencePercentage = result.confidence_score * 100;
+          return a;
+        }
 
-          document.getElementById("confidence").textContent =
-            confidencePercentage.toFixed(2);
+        const divisor = gcd(riceHullRatio, soilRatio);
 
-          document.getElementById("confidence-fill").style.width =
-            confidencePercentage.toFixed(2) + "%";
+        const simpleRiceHullRatio = riceHullRatio / divisor;
 
-          // Confidence description
-          const confidenceDescription = document.getElementById(
-            "confidence-description",
-          );
+        const simpleSoilRatio = soilRatio / divisor;
 
-          if (confidencePercentage >= 80) {
-            confidenceDescription.textContent = "High confidence prediction";
-          } else if (confidencePercentage >= 60) {
-            confidenceDescription.textContent =
-              "Moderate confidence prediction";
-          } else {
-            confidenceDescription.textContent = "Low confidence prediction";
-          }
+        document.getElementById("simplified-rice-hull-ratio").textContent =
+          simpleRiceHullRatio;
 
-          document.getElementById("result-image").src = result.file_path;
-          const riceHullPercentage = parseFloat(result.bramble_mix_ratio);
+        document.getElementById("simplified-soil-ratio").textContent =
+          simpleSoilRatio;
 
-          // Display the original percentage
-          document.getElementById("rice-hull-percentage").textContent =
-            riceHullPercentage;
+        // ==============================
+        // PH ADJUSTMENT RECOMMENDATIONS
+        // ==============================
 
-          // Ignore decimal part for ratio calculation
-          const riceHullRatio = Math.floor(riceHullPercentage);
-          const soilRatio = 100 - riceHullRatio;
+        const phTable = document.getElementById("ph-recommendation-table");
+        const sulfurRow = document.getElementById("option-sulfur");
+        const aluminumRow = document.getElementById("option-aluminum");
 
-          // Find GCD
-          function gcd(a, b) {
-            while (b !== 0) {
-              const temp = b;
-              b = a % b;
-              a = temp;
-            }
-            return a;
-          }
+        // Always show PH table
+        phTable.style.display = "table";
 
-          const divisor = gcd(riceHullRatio, soilRatio);
+        const phValue = document.getElementById("pH_value").value;
 
-          const simpleRiceHullRatio = riceHullRatio / divisor;
-          const simpleSoilRatio = soilRatio / divisor;
+        if (!phValue) {
+          // No pH entered
+          sulfurRow.innerHTML = `
+    <td class="option-name">INFO</td>
+    <td class="option-description">
+      Enter the pH value of the soil sample for more accurate pH adjustment recommendations.
+    </td>
+  `;
 
-          // Display simplest ratio
-          document.getElementById("simplified-rice-hull-ratio").textContent =
-            simpleRiceHullRatio;
-
-          document.getElementById("simplified-soil-ratio").textContent =
-            simpleSoilRatio;
-
+          aluminumRow.innerHTML = `
+    <td class="option-name">&nbsp;</td>
+    <td class="option-description">&nbsp;</td>
+  `;
+        } else {
           if (result.pH_adjustment_sulfur) {
             const isStatus =
               result.pH_adjustment_sulfur ===
               "The soil pH is already suitable for tea nurseries.";
 
-            document.getElementById("option-sulfur").innerHTML = `
-    <td class="option-name">
-      ${isStatus ? "STATUS" : "OPTION 1 (Sulfur)"}
-    </td>
-    <td class="option-description">
-      ${result.pH_adjustment_sulfur}
-    </td>
-  `;
+            sulfurRow.innerHTML = `
+      <td class="option-name">
+        ${isStatus ? "STATUS" : "OPTION 1 (Sulfur)"}
+      </td>
+      <td class="option-description">
+        ${result.pH_adjustment_sulfur}
+      </td>
+    `;
           } else {
-            document.getElementById("option-sulfur").innerHTML = "";
+            sulfurRow.innerHTML = `
+      <td class="option-name">&nbsp;</td>
+      <td class="option-description">&nbsp;</td>
+    `;
           }
 
-          document.getElementById("option-aluminum").innerHTML =
-            result.pH_adjustment_aluminum
-              ? `
-      <td class="option-name">OPTION 2 (Aluminum Sulfate)</td>
+          if (result.pH_adjustment_aluminum) {
+            aluminumRow.innerHTML = `
+      <td class="option-name">
+        OPTION 2 (Aluminum Sulfate)
+      </td>
       <td class="option-description">
         ${result.pH_adjustment_aluminum}
       </td>
-    `
-              : "";
+    `;
+          } else {
+            aluminumRow.innerHTML = `
+      <td class="option-name">&nbsp;</td>
+      <td class="option-description">&nbsp;</td>
+    `;
+          }
         }
       };
+
+      // ==============================
+      // RESET BUTTON
+      // ==============================
 
       const resetButton = document.getElementById("resetButton");
 
       resetButton.addEventListener("click", () => {
-        // Reset the form
+        // Reset form
         form.reset();
 
-        // Reset prediction results
-        // Reset prediction results
+        // Clear PH error
+        document.getElementById("ph-error").textContent = "";
+
+        // Reset prediction
         document.getElementById("soil-type").textContent = "N/A";
+
         document.getElementById("soil-icon").style.backgroundColor = "#ccc";
+
         document.getElementById("confidence").textContent = "N/A";
+
+        document.getElementById("confidence-fill").style.width = "0%";
+
+        document.getElementById("confidence-description").textContent =
+          "Waiting for prediction...";
+
+        // Reset rice hull
         document.getElementById("rice-hull-percentage").textContent = "N/A";
+
         document.getElementById("simplified-rice-hull-ratio").textContent =
           "N/A";
+
         document.getElementById("simplified-soil-ratio").textContent = "N/A";
 
-        // Clear uploaded image
+        // Clear image
         document.getElementById("result-image").src = "";
 
-        // Clear recommendations
-        document.getElementById("option-sulfur").textContent = "";
-        document.getElementById("option-aluminum").textContent = "";
+        // Clear PH recommendations
+        document.getElementById("ph-recommendation-table").style.display =
+          "table";
+
+        document.getElementById("option-sulfur").innerHTML = `
+  <td class="option-name">&nbsp;</td>
+  <td class="option-description">&nbsp;</td>
+`;
+
+        document.getElementById("option-aluminum").innerHTML = `
+  <td class="option-name">&nbsp;</td>
+  <td class="option-description">&nbsp;</td>
+`;
       });
     </script>
   </body>

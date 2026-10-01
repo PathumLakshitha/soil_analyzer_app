@@ -148,6 +148,12 @@ button:hover {
   margin-right: 20px;
 }
 
+.ph-error {
+  color: #c62828;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 /* ==========================================
    IMAGE + RESULT DETAILS CONTAINER
    ========================================== */
